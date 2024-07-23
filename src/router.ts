@@ -3,7 +3,9 @@ import { Router } from "express";
 const router = Router();
 
 //  Product Routes
-router.get("/product", (req, res) => {});
+router.get("/product", (req, res) => {
+  res.send("Product Route");
+});
 router.get("/product/:id", () => {});
 router.put("/product/:id", () => {});
 router.post("/product", () => {});
