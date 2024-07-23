@@ -9,12 +9,12 @@ generator client {
 }
 
 datasource db {
-  provider = "mongodb"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
 model User {
-  id        String    @id @default(auto()) @map("_id") @db.ObjectId
+  id        String    @id @default(uuid()) 
   username  String    @unique
   password  String
   createdAt DateTime  @default(now())
@@ -23,12 +23,11 @@ model User {
 }
 
 model Product {
-  id          String   @id @default(auto()) @map("_id") @db.ObjectId
-  name        String
+  id          String   @id @default(uuid()) 
   price       Float
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
-  belongsToId String   @db.ObjectId
+  belongsToId String
   belongsTo   User     @relation(fields: [belongsToId], references: [id])
   update      Update[]
 }
@@ -40,7 +39,7 @@ enum UPDATE_STATUS {
 }
 
 model Update {
-  id        String        @id @default(auto()) @map("_id") @db.ObjectId
+  id        String        @id @default(uuid())  
   createdAt DateTime      @default(now())
   updatedAt DateTime      @updatedAt
   title     String
@@ -49,17 +48,17 @@ model Update {
   version   String?
   asset     String?
 
-  productId    String        @db.ObjectId
+  productId    String
   product      Product       @relation(fields: [productId], references: [id])
   updatePoints UpdatePoint[]
 }
 
 model UpdatePoint {
-  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  id          String   @id @default(uuid())  
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
   name        String
   description String
-  updateId    String   @db.ObjectId
+  updateId    String
   update      Update   @relation(fields: [updateId], references: [id])
 }
